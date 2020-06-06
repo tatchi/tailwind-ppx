@@ -94,10 +94,12 @@ jobs:
       #   uses: actions/download-artifact@v2
       #   with:
       #     name: windows-latest
+      #     path: windows-latest
       # - name: Download macOS release
       #   uses: actions/download-artifact@v2
       #   with:
       #     name: macos-latest
+      #     path: macos-latest
       # Move artifacts in place
       - name: Move artifacts
         run: |
@@ -125,41 +127,65 @@ jobs:
       #  env:
       #    NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
 
-  test-platform:
-    name: Test installing ${{ matrix.os }}
-    needs: prepare-publish
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-    steps:
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
-      - name: Download ${{ runner.os }} release
-        uses: actions/download-artifact@v2
-        with:
-          name: release-tarball
-      - name: test install
-        run: npm -g install ./tailwind-ppx.tgz
-      - name: test binary
-        run: ppx --help
-
-  # publish:
-  #   needs: build_and_test
-  #   if: github.event_name != 'pull_request' && startsWith(github.ref, 'refs/tags/')
-  #   name: (only on release) Publish
-  #   runs-on: ubuntu-latest
+  # test-platform:
+  #   name: Test installing ${{ matrix.os }}
+  #   needs: prepare-publish
+  #   runs-on: ${{ matrix.os }}
+  #   strategy:
+  #     matrix:
+  #       os: [ubuntu-latest]
   #   steps:
-  #     - uses: actions/checkout@v2
-
-  #     - name: Use Node.js 12.x
-  #       uses: actions/setup-node@v1
+  #     - uses: actions/setup-node@v1
   #       with:
-  #         node-version: 12.x
+  #         node-version: 12
+  #     - name: Download ${{ runner.os }} release
+  #       uses: actions/download-artifact@v2
+  #       with:
+  #         name: release-tarball
+  #     - name: test install
+  #       run: npm -g install ./tailwind-ppx.tgz
+  #     - name: test binary
+  #       run: ppx --help
 
-  #     - name: Make NPM release skeleton
-  #       run: node script/release-make-skeleton.js
+  publish:
+    needs: build_and_test
+    if: github.event_name != 'pull_request' && startsWith(github.ref, 'refs/tags/')
+    name: (only on release) Publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
+      - name: Download Linux release
+      uses: actions/download-artifact@v2
+      with:
+        name: ubuntu-latest
+        path: ubuntu-latest
+
+      - name: Create GitHub release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload ubuntu-latest to Github release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ubuntu-latest.zip
+          asset_name: ubuntu-latest.zip
+          asset_content_type: application/gzip
 
   #     - name: Download linux artifacts
   #       uses: actions/download-artifact@master
