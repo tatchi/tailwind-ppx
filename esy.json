@@ -12,9 +12,8 @@
   },
   "esy": {
     "build": "dune build -p #{self.name}",
-    "buildEnv": { "ODOC_SYNTAX": "re" },
     "buildsInSource": "_build",
-    "release": { "bin": ["Bin", "UsePpx"] }
+    "release": { "bin": ["ppx", "use_ppx"] }
   },
   "dependencies": {
     "@opam/dune": "1.11.4",
