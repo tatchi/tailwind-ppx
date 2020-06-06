@@ -63,6 +63,14 @@ jobs:
           yarn test
         working-directory: ./test/bucklescript
 
+      # Create the NPM package for this platform
+      - name: Create npm package
+        run: esy npm-release
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.os }}
+          path: _release/
+
   publish:
     needs: build_and_test
     if: github.event_name != 'pull_request' && startsWith(github.ref, 'refs/tags/')
