@@ -7,7 +7,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -89,23 +89,20 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: ubuntu-latest
-      - name: Download Windows release
-        uses: actions/download-artifact@v2
-        with:
-          name: windows-latest
-      - name: Download macOS release
-        uses: actions/download-artifact@v2
-        with:
-          name: macos-latest
+          path: ubuntu-latest
+      # - name: Download Windows release
+      #   uses: actions/download-artifact@v2
+      #   with:
+      #     name: windows-latest
+      # - name: Download macOS release
+      #   uses: actions/download-artifact@v2
+      #   with:
+      #     name: macos-latest
       # Move artifacts in place
       - name: Move artifacts
         run: |
           mkdir -p _release/platform-linux
-          mkdir -p _release/platform-windows-x64
-          mkdir -p _release/platform-darwin
-          cp -a ubuntu-latest/. _release/platform-linux
-          cp -a windows-latest/. _release/platform-windows-x64
-          cp -a macos-latest/. _release/platform-darwin
+          cp -a  ubuntu-latest/. _release/platform-linux
       - name: Prepare package
         run: node .github/workflows/bundle-release.js
       # Create a npm package that can easily be published and tested
@@ -134,7 +131,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macOS-latest, windows-latest]
+        os: [ubuntu-latest]
     steps:
       - uses: actions/setup-node@v1
         with:
