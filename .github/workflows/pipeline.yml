@@ -161,10 +161,10 @@ jobs:
           node-version: 12.x
 
       - name: Download Linux release
-      uses: actions/download-artifact@v2
-      with:
-        name: ubuntu-latest
-        path: ubuntu-latest
+        uses: actions/download-artifact@v2
+        with:
+          name: ubuntu-latest
+          path: ubuntu-latest
 
       - name: Create GitHub release
         id: create_release
@@ -186,39 +186,32 @@ jobs:
           asset_path: ubuntu-latest.zip
           asset_name: ubuntu-latest.zip
           asset_content_type: application/gzip
-
   #     - name: Download linux artifacts
   #       uses: actions/download-artifact@master
   #       with:
   #         name: ubuntu-latest
   #         path: _release/platform-linux-x64
-
   #     - name: Download macOS artifacts
   #       uses: actions/download-artifact@master
   #       with:
   #         name: macos-latest
   #         path: _release/platform-darwin-x64
-
   #     - name: Download windows artifacts
   #       uses: actions/download-artifact@master
   #       with:
   #         name: windows-latest
   #         path: _release/platform-windows-x64
-
   #     - name: Create archives for Github release
   #       run: |
   #         cd _release/platform-darwin-x64
   #         zip -r ../../tailwind-ppx-darwin-x64.zip .
   #         cd ../..
-
   #         cd _release/platform-linux-x64
   #         zip -r ../../tailwind-ppx-linux-x64.zip .
   #         cd ../..
-
   #         cd _release/platform-windows-x64
   #         zip -r ../../tailwind-ppx-windows-x64.zip .
   #         cd ../..
-
   #     - name: Create GitHub release
   #       id: create_release
   #       uses: actions/create-release@v1.0.0
@@ -229,7 +222,6 @@ jobs:
   #         release_name: Release ${{ github.ref }}
   #         draft: false
   #         prerelease: false
-
   #     - name: Upload tailwind-ppx-darwin-x64.zip to Github release
   #       uses: actions/upload-release-asset@v1.0.1
   #       env:
@@ -239,7 +231,6 @@ jobs:
   #         asset_path: tailwind-ppx-darwin-x64.zip
   #         asset_name: tailwind-ppx-darwin-x64.zip
   #         asset_content_type: application/gzip
-
   #     - name: Upload tailwind-ppx-linux-x64.zip to Github release
   #       uses: actions/upload-release-asset@v1.0.1
   #       env:
@@ -249,7 +240,6 @@ jobs:
   #         asset_path: tailwind-ppx-linux-x64.zip
   #         asset_name: tailwind-ppx-linux-x64.zip
   #         asset_content_type: application/gzip
-
   #     - name: Upload tailwind-ppx-windows-x64.zip to Github release
   #       uses: actions/upload-release-asset@v1.0.1
   #       env:
@@ -259,7 +249,6 @@ jobs:
   #         asset_path: tailwind-ppx-windows-x64.zip
   #         asset_name: tailwind-ppx-windows-x64.zip
   #         asset_content_type: application/gzip
-
   #     - name: Publish NPM package
   #       run: |
   #         npm config set //registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN
