@@ -160,10 +160,14 @@ jobs:
         with:
           node-version: 12.x
 
-      - name: Download Linux release
+      - name: Download release
         uses: actions/download-artifact@v2
         with:
-          name: ubuntu-latest
+          name: release
+          path: release
+      - name: Build project # This would actually build your project, using zip for an example artifact
+        run: |
+          zip --junk-paths release
       - name: Display structure of downloaded files
         run: ls -R
       - name: Create GitHub release
@@ -183,8 +187,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ubuntu-latest
-          asset_name: ubuntu-latest.zip
+          asset_path: release.zip
+          asset_name: release.zip
           asset_content_type: application/gzip
   #     - name: Download linux artifacts
   #       uses: actions/download-artifact@master
