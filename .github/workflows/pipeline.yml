@@ -164,8 +164,8 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: ubuntu-latest
-          path: ubuntu-latest
-
+      - name: Display structure of downloaded files
+        run: ls -R
       - name: Create GitHub release
         id: create_release
         uses: actions/create-release@v1
