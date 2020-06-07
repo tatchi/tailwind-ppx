@@ -17,14 +17,12 @@ jobs:
         run: npm install -g esy
 
       - name: Try to restore install cache
-        id: install-cache
         uses: actions/cache@v2
         with:
           path: ~/.esy/source
           key: source-${{ matrix.os }}-${{ hashFiles('**/index.json') }}
 
       - name: Install dependencies
-        if: steps.install-cache.outputs.cache-hit != 'true'
         run: esy install
 
       - name: Print esy cache
@@ -40,7 +38,6 @@ jobs:
           restore-keys: build-${{ matrix.os }}-
 
       - name: Build
-        if: steps.deps-cache.outputs.cache-hit != 'true'
         run: esy build
 
       - name: Run Native tests
@@ -190,6 +187,13 @@ jobs:
           asset_path: release.zip
           asset_name: release.zip
           asset_content_type: application/gzip
+
+      - name: Publish NPM package
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
+        working-directory: ./release
+
   #     - name: Download linux artifacts
   #       uses: actions/download-artifact@master
   #       with:
