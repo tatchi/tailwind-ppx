@@ -162,6 +162,9 @@ jobs:
 
       - name: Download release
         uses: actions/download-artifact@v2
+        with:
+          name: release
+          path: release
       - name: Display structure of downloaded files
         run: ls
       - name: Build project # This would actually build your project, using zip for an example artifact
