@@ -165,11 +165,11 @@ jobs:
         with:
           name: release
           path: release
-      - name: Build project # This would actually build your project, using zip for an example artifact
-        run: |
-          zip release.zip release
       - name: Display structure of downloaded files
         run: ls -R
+      - name: Build project # This would actually build your project, using zip for an example artifact
+        run: |
+          zip -r release.zip release
       - name: Create GitHub release
         id: create_release
         uses: actions/create-release@v1
