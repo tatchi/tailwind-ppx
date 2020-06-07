@@ -192,7 +192,11 @@ jobs:
           asset_content_type: application/gzip
 
       - name: Publish NPM package
-        run: npm publish --@tatchi:registry=https://registry.npmjs.org/ --access public
+        run: |
+          npm config set //registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN
+          npm config set scope "@tatchi"
+          npm config list
+          npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
         working-directory: ./release
