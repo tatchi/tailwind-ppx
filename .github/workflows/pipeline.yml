@@ -37,7 +37,11 @@ jobs:
           key: build-${{ matrix.os }}-${{ hashFiles('**/index.json') }}
           restore-keys: build-${{ matrix.os }}-
 
-      - name: Build
+      - name: Build dependencies
+        if: steps.deps-cache.outputs.cache-hit != 'true'
+        run: esy build-dependencies
+
+      - name: Build project
         run: esy build
 
       - name: Run Native tests
@@ -70,6 +74,12 @@ jobs:
         with:
           name: ${{ matrix.os }}
           path: _release/
+
+      # Cleanup build cache if dependencies have changed
+      - name: Clean build cache
+        if: steps.deps-cache.outputs.cache-hit != 'true'
+        run: esy cleanup .
+  
 
   prepare-publish:
     name: Prepare publish to npm
