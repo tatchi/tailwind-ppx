@@ -7,7 +7,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -90,21 +90,25 @@ jobs:
         with:
           name: ubuntu-latest
           path: ubuntu-latest
-      # - name: Download Windows release
-      #   uses: actions/download-artifact@v2
-      #   with:
-      #     name: windows-latest
-      #     path: windows-latest
-      # - name: Download macOS release
-      #   uses: actions/download-artifact@v2
-      #   with:
-      #     name: macos-latest
-      #     path: macos-latest
+      - name: Download Windows release
+        uses: actions/download-artifact@v2
+        with:
+          name: windows-latest
+          path: windows-latest
+      - name: Download macOS release
+        uses: actions/download-artifact@v2
+        with:
+          name: macos-latest
+          path: macos-latest
       # Move artifacts in place
       - name: Move artifacts
         run: |
           mkdir -p _release/platform-linux
-          cp -a  ubuntu-latest/. _release/platform-linux
+          mkdir -p _release/platform-windows-x64
+          mkdir -p _release/platform-darwin
+          cp -a ubuntu-latest/. _release/platform-linux
+          cp -a windows-latest/. _release/platform-windows-x64
+          cp -a macos-latest/. _release/platform-darwin
       - name: Prepare package
         run: node .github/workflows/bundle-release.js
       # Create a npm package that can easily be published and tested
@@ -127,25 +131,25 @@ jobs:
       #  env:
       #    NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
 
-  # test-platform:
-  #   name: Test installing ${{ matrix.os }}
-  #   needs: prepare-publish
-  #   runs-on: ${{ matrix.os }}
-  #   strategy:
-  #     matrix:
-  #       os: [ubuntu-latest]
-  #   steps:
-  #     - uses: actions/setup-node@v1
-  #       with:
-  #         node-version: 12
-  #     - name: Download ${{ runner.os }} release
-  #       uses: actions/download-artifact@v2
-  #       with:
-  #         name: release-tarball
-  #     - name: test install
-  #       run: npm -g install ./tailwind-ppx.tgz
-  #     - name: test binary
-  #       run: ppx --help
+  test-platform:
+    name: Test installing ${{ matrix.os }}
+    needs: prepare-publish
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macOS-latest, windows-latest]
+    steps:
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Download ${{ matrix.os }} release
+        uses: actions/download-artifact@v2
+        with:
+          name: release-tarball
+      - name: test install
+        run: npm -g install ./tailwind-ppx.tgz
+      - name: test binary
+        run: ppx --help
 
   publish:
     needs: prepare-publish
@@ -165,11 +169,8 @@ jobs:
         with:
           name: release
           path: release
-      - name: Display structure of downloaded files
-        run: ls
-      - name: Build project # This would actually build your project, using zip for an example artifact
-        run: |
-          zip -r release.zip release
+      - name: Zip release folder
+        run: zip -r release.zip release
       - name: Create GitHub release
         id: create_release
         uses: actions/create-release@v1
@@ -200,7 +201,6 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
         working-directory: ./release
-
   #     - name: Download linux artifacts
   #       uses: actions/download-artifact@master
   #       with:
