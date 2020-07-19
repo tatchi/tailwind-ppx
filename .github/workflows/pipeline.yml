@@ -164,8 +164,8 @@ jobs:
       - name: test ppx binary
         run: npx tailwind-ppx --help
         working-directory: ./test-tailwind-ppx
-      - name: test use-tailwind-ppx binary
-        run: npx use_ppx
+      - name: test use-ppx binary
+        run: npx use-tailwind-ppx
         working-directory: ./test-tailwind-ppx
 
   publish:
