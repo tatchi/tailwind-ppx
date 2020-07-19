@@ -13,22 +13,22 @@
   "esy": {
     "build": "dune build --root=.",
     "buildsInSource": "_build",
-    "release": { "bin": ["ppx", "use_ppx"] }
+    "release": { "bin": ["tailwind-ppx", "use-tailwind-ppx"] }
   },
   "dependencies": {
-    "@opam/dune": "2.5.1",
+    "@opam/dune": "2.6.1",
     "@opam/fmt": "0.8.8",
     "@opam/menhir": "*",
     "@opam/ocaml-migrate-parsetree": "^1.7.0",
     "@esy-ocaml/reason": "~3.6.0",
-    "@opam/css-parser": "^0.2.4"
+    "@opam/css-parser": "^0.2.4",
+    "@reason-native/rely": "*"
   },
   "devDependencies": {
     "ocaml": "~4.9.1",
     "@opam/ocamlformat": "*",
     "@opam/merlin": "*",
     "@opam/utop": "*",
-    "@reason-native/rely": "*",
     "refmterr": "*"
   },
   "scripts": {
