@@ -80,7 +80,6 @@ jobs:
       - name: Clean build cache
         if: steps.deps-cache.outputs.cache-hit != 'true'
         run: esy cleanup .
-  
 
   prepare-publish:
     name: Prepare publish to npm
@@ -154,24 +153,12 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: release-tarball
-      - name: install bs-platform
-        run: npm install -g bs-platform
-      - name: bootstrap test project
-        run: bsb -init test-tailwind-ppx -theme basic-reason
-      - name: install tailwind-ppx
-        run: npm install -g ./tailwind-ppx.tgz
-      - name: install bs-platform locally
-        run: npm install bs-platform
-        working-directory: ./test-tailwind-ppx
-      - name: build project
-        run: npm run build
-        working-directory: ./test-tailwind-ppx
-      - name: test ppx binary
+      - name: test install
+        run: npm -g install ./tailwind-ppx.tgz
+      - name: test tailwind-ppx binary
         run: tailwind-ppx --help
-        working-directory: ./test-tailwind-ppx
-      - name: test use-ppx binary
+      - name: test use-tailwind-ppx binary
         run: use-tailwind-ppx
-        working-directory: ./test-tailwind-ppx
 
   publish:
     needs: prepare-publish
