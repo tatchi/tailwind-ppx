@@ -154,25 +154,12 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: release-tarball
-      - name: install bs-platform
-        run: npm install -g bs-platform
-      - name: bootstrap test project
-        run: bsb -init test-tailwind-ppx -theme basic-reason
-      - name: install tailwind-ppx
-        run: npm install ../tailwind-ppx.tgz
-        working-directory: ./test-tailwind-ppx
-      - name: install bs-platform locally
-        run: npm install bs-platform
-        working-directory: ./test-tailwind-ppx
-      - name: build project
-        run: npm run build
-        working-directory: ./test-tailwind-ppx
-      - name: test ppx binary
-        run: node_modules/.bin/tailwind-ppx --help
-        working-directory: ./test-tailwind-ppx
-      - name: test use-ppx binary
-        run: node_modules/.bin/use-tailwind-ppx
-        working-directory: ./test-tailwind-ppx
+      - name: test install
+        run: npm -g install ./tailwind-ppx.tgz
+      - name: test tailwind-ppx binary
+        run: tailwind-ppx --help
+      - name: test use-tailwind-ppx binary
+        run: use-tailwind-ppx
 
   publish:
     needs: prepare-publish
