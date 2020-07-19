@@ -11,7 +11,7 @@
     "url": "https://github.com/dylanirlbeck/tailwind-ppx.git"
   },
   "esy": {
-    "build": "dune build --root=.",
+    "build": "dune build -p #{self.name}",
     "buildsInSource": "_build",
     "release": { "bin": ["tailwind-ppx", "use-tailwind-ppx"] }
   },
