@@ -157,7 +157,7 @@ jobs:
       - name: install bs-platform
         run: npm -g install bs-platform
       - name: bootstrap test project
-        run: bsb -init . theme -basic-reason
+        run: bsb -init . -theme basic-reason
       - name: install tailwind-ppx
         run: npm install ./tailwind-ppx.tgz
       - name: test ppx binary
