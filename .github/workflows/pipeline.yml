@@ -161,6 +161,9 @@ jobs:
       - name: install tailwind-ppx
         run: yarn add ../tailwind-ppx.tgz
         working-directory: ./test-tailwind-ppx
+      - name: install bs-platform locally
+        run: yarn add bs-platform
+        working-directory: ./test-tailwind-ppx
       - name: build project
         run: yarn build
         working-directory: ./test-tailwind-ppx
