@@ -154,22 +154,24 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: release-tarball
+      - name: install bs-platform
+        run: npm install -g bs-platform
       - name: bootstrap test project
-        run: npx bsb -init test-tailwind-ppx -theme basic-reason
+        run: bsb -init test-tailwind-ppx -theme basic-reason
       - name: install tailwind-ppx
-        run: yarn add ../tailwind-ppx.tgz
+        run: npm install ../tailwind-ppx.tgz
         working-directory: ./test-tailwind-ppx
       - name: install bs-platform locally
-        run: yarn add bs-platform
+        run: npm install bs-platform
         working-directory: ./test-tailwind-ppx
       - name: build project
-        run: yarn build
+        run: npm run build
         working-directory: ./test-tailwind-ppx
       - name: test ppx binary
-        run: yarn tailwind-ppx --help
+        run: npm run tailwind-ppx --help
         working-directory: ./test-tailwind-ppx
       - name: test use-ppx binary
-        run: yarn use-tailwind-ppx
+        run: npm run use-tailwind-ppx
         working-directory: ./test-tailwind-ppx
 
   publish:
