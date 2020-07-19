@@ -159,8 +159,7 @@ jobs:
       - name: bootstrap test project
         run: bsb -init test-tailwind-ppx -theme basic-reason
       - name: install tailwind-ppx
-        run: npm install ../tailwind-ppx.tgz
-        working-directory: ./test-tailwind-ppx
+        run: npm install -g ../tailwind-ppx.tgz
       - name: install bs-platform locally
         run: npm install bs-platform
         working-directory: ./test-tailwind-ppx
@@ -168,10 +167,10 @@ jobs:
         run: npm run build
         working-directory: ./test-tailwind-ppx
       - name: test ppx binary
-        run: yarn tailwind-ppx --help
+        run: tailwind-ppx --help
         working-directory: ./test-tailwind-ppx
       - name: test use-ppx binary
-        run: yarn use-tailwind-ppx
+        run: use-tailwind-ppx
         working-directory: ./test-tailwind-ppx
 
   publish:
