@@ -169,11 +169,9 @@ jobs:
         run: npm run build
         working-directory: ./test-tailwind-ppx
       - name: test tailwind-ppx binary
-        shell: bash
-        run: tailwind-ppx --help
+        run: npx tailwind-ppx --help
       - name: test use-tailwind-ppx binary
-        shell: bash
-        run: use-tailwind-ppx
+        run: npx use-tailwind-ppx
         working-directory: ./test-tailwind-ppx
 
   publish:
