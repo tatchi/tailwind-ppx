@@ -169,6 +169,8 @@ jobs:
         run: npm run build
         working-directory: ./test-tailwind-ppx
       - name: test tailwind-ppx binary
+        if: ${{runner.os == 'Windows'}}
+        shell: cmd
         run: tailwind-ppx --help
       - name: test use-tailwind-ppx binary
         run: use-tailwind-ppx
